@@ -11,6 +11,34 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
+const htmlReqResTemplate = `  <div className='py-2 pl-2 font-bold text-3xl'>
+            <div>
+                POST: /addSchool
+            </div>
+            <div>
+                request: {name : string, address: string, latitude: number, longitude: number}
+
+            </div>
+            <div>
+                response: {status: number}, if error: {status: number, error: error}
+
+            </div>
+            <div>
+                GET: /listSchools
+            </div>
+
+            <div>
+                request: { latitude: number, longitude: number}
+            </div>
+            <div>
+                response: {status: number, list: Object[]}, if error: {status: number, error: error}
+            </div>
+        </div>`;
+
+app.get("/", (req, res) => {
+  res.set("Content-Type", "text/html");
+  res.send(Buffer.from(htmlReqResTemplate));
+});
 
 app.get("/listSchools", async (req, res) => {
   try {
