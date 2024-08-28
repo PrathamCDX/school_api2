@@ -6,7 +6,8 @@ import {
   longitudeSchema,
   nameSchema,
   latitudeSchema,
-} from "./validation.js";
+} from "./schema.js";
+import authRouter from "./Routings/authRouter.js";
 dotenv.config();
 
 const app = express();
@@ -35,46 +36,11 @@ const htmlReqResTemplate = `  <div className='py-2 pl-2 font-bold text-3xl'>
             </div>
         </div>`;
 
+app.use("", authRouter);
+
 app.get("/", (req, res) => {
   res.set("Content-Type", "text/html");
   res.send(Buffer.from(htmlReqResTemplate));
-});
-
-app.get("/listSchools", async (req, res) => {
-  try {
-    const longitude = req.body.longitude;
-    const latitude = req.body.latitude;
-
-    longitudeSchema.parse(longitude);
-    latitudeSchema.parse(latitude);
-
-    const sorted_list = await sortedListOnProximity(latitude, longitude);
-
-    res.send({ status: 202, list: sorted_list });
-  } catch (e) {
-    res.send({ status: 500, error: e.message });
-  }
-});
-
-app.post("/addSchool", async (req, res) => {
-  try {
-    const name = req.body.name;
-    const address = req.body.address;
-    const latitude = req.body.latitude;
-    const longitude = req.body.longitude;
-
-    nameSchema.parse(name);
-    addressSchema.parse(address);
-    latitudeSchema.parse(latitude);
-    longitudeSchema.parse(longitude);
-
-    // console.log(req.body);
-
-    const newData = await addData(name, address, latitude, longitude);
-    res.send({ status: 200 });
-  } catch (e) {
-    res.send({ status: 500, error: e.message });
-  }
 });
 
 try {
