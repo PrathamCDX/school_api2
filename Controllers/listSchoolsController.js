@@ -18,7 +18,7 @@ const listSchools = async (req, res) => {
 
     res.send({ status: 202, list: sorted_list });
   } catch (e) {
-    res.send({ status: 500, error: e.message });
+    res.send({ status: 500, error: e });
   }
 };
 

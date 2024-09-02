@@ -13,15 +13,16 @@ dotenv.config();
 
 const pool = mysql
   .createPool({
-    host: process.env.SQL_HOST,
-    user: process.env.SQL_USER,
-    password: process.env.SQL_PASSWORD,
-    database: process.env.SQL_DATABASE,
+    host: process.env.SQL2_HOST,
+    user: process.env.SQL2_USER,
+    password: process.env.SQL2_PASSWORD,
+    database: "MasterDb",
+    port: process.env.SQL2_PORT,
   })
   .promise();
 
 export async function addData(name, address, latitude, longitude) {
-  await pool.query(" USE " + process.env.SQL_NAME);
+  await pool.query(" USE " + process.env.SQL2_NAME);
   const newData = await pool.query(
     `INSERT INTO School (name, address, latitude, longitude) VALUES (?, ?, ?, ? );`,
     [name, address, latitude, longitude]
@@ -57,7 +58,7 @@ export async function sortedListOnProximity(
   referenceLatitude,
   referenceLongitude
 ) {
-  await pool.query(" USE " + process.env.SQL_NAME);
+  await pool.query(" USE " + process.env.SQL2_NAME);
   const [result] = await pool.query("SELECT * FROM School");
   //   return result;
   const sorted_list = await sortLocations(
@@ -67,3 +68,7 @@ export async function sortedListOnProximity(
   );
   return sorted_list;
 }
+
+await pool.query(" USE " + process.env.SQL2_NAME);
+const res = await pool.query("SELECT * FROM School");
+console.log(res);
