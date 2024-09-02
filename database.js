@@ -16,7 +16,7 @@ const pool = mysql
     host: process.env.SQL2_HOST,
     user: process.env.SQL2_USER,
     password: process.env.SQL2_PASSWORD,
-    database: "MasterDb",
+    database: process.env.SQL2_NAME,
     port: process.env.SQL2_PORT,
   })
   .promise();
